@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Sync .ipynb and .py notebooks in notebooks/ using jupytext
+# Relies on repository-level jupytext.toml for formats.
+# Usage:
+#   ./jupytext_sync           # one-time sync
+#   ./jupytext_sync --watch   # continuous sync (requires entr)
+
+NOTEBOOKS_DIR="notebooks"
+
+# Check if jupytext is installed
+if ! command -v jupytext >/dev/null 2>&1; then
+  echo "Error: jupytext not found. Activate your conda env or install jupytext." >&2
+  exit 1
+fi
+
+
+# Synchronize all .py and .ipynb files in the $NOTEBOOKS_DIR directory
+sync_once() {
+  # Sync any notebooks according to jupytext.toml formats
+  find "$NOTEBOOKS_DIR" -type f \( -name "*.ipynb" -o -name "*.py" \) -print0 | while IFS= read -r -d '' f; do
+    jupytext --sync "$f"
+  done
+}
+
+if [[ "${1-}" == "--watch" ]]; then
+  if ! command -v entr >/dev/null 2>&1; then
+    echo "Error: --watch requires 'entr'. Install via 'brew install entr' or skip --watch." >&2
+    exit 1
+  fi
+  echo "Watching $NOTEBOOKS_DIR for changes... (Ctrl-C to stop)"
+  while true; do
+    find "$NOTEBOOKS_DIR" -type f \( -name "*.ipynb" -o -name "*.py" \) | entr -d sh -c '"$0"' "$0"
+  done
+else
+  sync_once
+fi
+
+

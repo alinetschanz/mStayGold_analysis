@@ -1,0 +1,28 @@
+name: msg
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - numpy
+  - scikit-image
+  - scipy
+  - matplotlib
+  - ipython
+  - natsort
+  - seaborn
+  - pandas
+  - matplotlib
+  - seaborn
+  - jupyter
+  - jupytext
+  - jupyterlab
+  - cmake
+  - clang_osx-arm64
+  - pip
+  - pip:
+      - bioio
+      - bioio-czi
+      - scikit-posthocs
+      # Add any pip-only packages here
+

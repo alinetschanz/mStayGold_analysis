@@ -1,0 +1,10 @@
+# Jupytext configuration for this repository
+# See: https://jupytext.readthedocs.io/en/latest/config.html
+
+# Default paired formats for notebooks in this repo
+formats = "ipynb,py:percent"
+
+# Optional filters (keep metadata minimal in the text representation)
+notebook_metadata_filter = "-all"
+cell_metadata_filter = "-all"
+
