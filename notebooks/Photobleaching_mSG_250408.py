@@ -62,7 +62,7 @@ import os
 # This is specific for every detector & optical set up. The calculated offset can be applied to all images taken with the same filter and laser settings. Background images were taken by moving away from any detectable sample, and taking an image with the smallest laser power possible.
 
 # %%
-data_dir = "/Users/alinetschanz/SwinburneLab Dropbox/Aline/Data/2024"
+data_dir = "../data/msg_data/2024"
 
 # %%
 # Read & plot background image
@@ -250,7 +250,7 @@ for col, power in enumerate(powers):
 
 
 plt.tight_layout()
-plt.savefig('../Results/PDFs/bleaching_curves_averaged_individual_SD.pdf')
+plt.savefig('../results/bleaching_curves_averaged_individual_SD.pdf')
 plt.show()
 
 # %%
@@ -291,7 +291,7 @@ for col, power in enumerate(powers):
     ax.legend()
 
 plt.tight_layout()
-plt.savefig('../Results/PDFs/bleaching_curves_averaged_individual.pdf')
+plt.savefig('../results/bleaching_curves_averaged_individual.pdf')
 plt.show()
 
 # %% [markdown]
@@ -587,8 +587,10 @@ for row, fluorophore in enumerate(fluorophores):
         ax.set_ylim(0, 110)
 
 plt.tight_layout()
-plt.savefig('bleaching_curves.pdf')
+plt.savefig('../results/bleaching_curves_matrix.pdf')
 plt.show()
 
 
 
+
+# %%

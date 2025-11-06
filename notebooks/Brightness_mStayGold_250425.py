@@ -78,7 +78,7 @@ import scikit_posthocs as sp
 
 # %%
 #Set data directory
-data_dir = "/Users/alinetschanz/SwinburneLab Dropbox/Aline/Data"
+data_dir = "../data/msg_data/"
 
 # %%
 #Read & plot background image
@@ -284,19 +284,31 @@ for FP in FPs:
 # Normalize mSG intensity to mSc3 intensity
 
 # %%
+# Compute global mean in red channel as baseline
+all_red_values = []
+
+for FP in stk_img.keys(): 
+    for fish_name in stk_img[FP].keys():
+        for rep in stk_img[FP][fish_name].keys():
+            red = stk_img[FP][fish_name][rep]['corrected']['red_avg']
+            all_red_values.append(red)
+
+global_red_mean = np.mean(all_red_values, axis=0)
+
+# Normalize green channel to red channel baseline
 for FP in stk_img.keys(): 
     for fish_name in sorted(stk_img[FP].keys()):
         for rep in sorted(stk_img[FP][fish_name].keys()):
             stk_img[FP][fish_name][rep]['corrected']['green_avg_norm'] = {}
             
-            img = stk_img[FP][fish_name][rep]['corrected']['green_avg'] # image
-            ref = stk_img[FP][fish_name][rep]['corrected']['red_avg'] # reference
+            img = stk_img[FP][fish_name][rep]['corrected']['green_avg']
+            ref = stk_img[FP][fish_name][rep]['corrected']['red_avg']
                 
             # Calculate normalization factor for the current replicate
             factor = img / ref
                 
             # Normalize data by factor
-            stk_img[FP][fish_name][rep]['corrected']['green_avg_norm'] = stk_img[FP][fish_name][rep]['corrected']['green_avg'] * factor
+            stk_img[FP][fish_name][rep]['corrected']['green_avg_norm'] = ((img / ref) * global_red_mean)
 
 # %%
 #Access normalization factor for correction of represntative images
@@ -376,7 +388,7 @@ plt.xlabel('Fluorescent Protein')
 for i, FP in enumerate(sorted(data_dict.keys()), 1):
     plt.scatter([i] * len(data_dict[FP]), data_dict[FP], alpha=0.5)
 
-plt.savefig('../Results/PDFs/brightness_boxplot_mSG_250425.pdf')
+plt.savefig('../results/brightness_boxplot_mSG_250425.pdf')
 plt.show()
 
 
@@ -575,3 +587,5 @@ plt.tight_layout()
 plt.show()
 
 
+
+# %%
